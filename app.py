@@ -21,9 +21,14 @@ st.set_page_config(
 df = pd.read_csv("outputs/cleaned_data.csv")
 clusters = pd.read_csv("outputs/customer_clusters.csv")
 
-similarity = joblib.load("models/similarity.pkl")
 kmeans = joblib.load("models/kmeans.pkl")
 scaler = joblib.load("models/scaler.pkl")
+
+# Recommendation Dictionary
+similarity = joblib.load("models/similarity.pkl")
+
+# Sample Similarity Matrix (30×30)
+similarity_matrix = joblib.load("models/similarity_matrix.pkl")
 
 df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
 
@@ -386,22 +391,44 @@ elif page == "Customer Segmentation":
 # SIMILARITY MATRIX
 # =====================================================
 
+# =====================================================
+# SIMILARITY MATRIX
+# =====================================================
+
 elif page == "Similarity Matrix":
 
     st.title("🔥 Product Similarity Matrix")
 
-    sample = similarity.iloc[:30, :30]
+    st.markdown("""
+    This heatmap visualizes the cosine similarity between a sample of products.
+
+    Darker colors indicate lower similarity, while brighter colors represent highly similar products.
+    """)
 
     fig = px.imshow(
-        sample,
+        similarity_matrix,
         color_continuous_scale="Viridis",
-        title="Product Similarity Heatmap"
+        title="Sample Product Similarity Heatmap (30 × 30)"
+    )
+
+    fig.update_layout(
+        height=700,
+        xaxis_title="Products",
+        yaxis_title="Products"
     )
 
     st.plotly_chart(
         fig,
         use_container_width=True
     )
+
+    st.info("""
+📌 **Note**
+
+To optimize deployment and reduce model size, the dashboard displays a representative 30×30 sample of the product similarity matrix.
+
+The recommendation engine still uses the optimized recommendation model to generate accurate product suggestions.
+""")
     
     # =====================================================
 # PRODUCT RECOMMENDATION

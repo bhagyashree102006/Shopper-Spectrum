@@ -55,10 +55,27 @@ for product in similarity_df.index:
 # Save Optimized Model
 # ============================================
 
+# ============================================
+# Save Recommendation Dictionary
+# ============================================
+
 joblib.dump(
     top_recommendations,
     "models/similarity.pkl",
     compress=3
 )
 
-print("Optimized Recommendation Model Created Successfully!")
+# ============================================
+# Save Sample Similarity Matrix (30 x 30)
+# ============================================
+
+sample_similarity = similarity_df.iloc[:30, :30]
+
+joblib.dump(
+    sample_similarity,
+    "models/similarity_matrix.pkl",
+    compress=3
+)
+
+print("Recommendation Dictionary Saved!")
+print("Similarity Matrix Sample Saved!")
