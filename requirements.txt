@@ -1,8 +1,9 @@
+streamlit
 pandas
 numpy
-matplotlib
-seaborn
 plotly
-streamlit
 scikit-learn
 joblib
+matplotlib
+openpyxl
+scipy
